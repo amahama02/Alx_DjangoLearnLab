@@ -3,6 +3,7 @@ from django.views.generic import ListView, CreateView
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from .models import Book
 from django.urls import reverse_lazy
+from .forms import BookForm
 
 class BookListView(PermissionRequiredMixin, ListView):
     model = Book
@@ -16,7 +17,7 @@ class BookListView(PermissionRequiredMixin, ListView):
 
 class BookCreateView(PermissionRequiredMixin, CreateView):
     model = Book
-    fields = ['title', 'author', 'publication_year']
+    form_class = BookForm
     template_name = 'bookshelf/book_form.html'
     success_url = reverse_lazy('book_list')
     permission_required = 'bookshelf.can_create'
