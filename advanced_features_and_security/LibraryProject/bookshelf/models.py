@@ -1,19 +1,9 @@
 from django.db import models
-
-class Book(models.Model):
-    title = models.CharField(max_length=200)
-    author = models.CharField(max_length=100)
-    publication_year = models.IntegerField()
-
-    def __str__(self):
-        return self.title # This is a good practice to add!
-# Create your models here.
 from django.contrib.auth.models import AbstractUser, BaseUserManager
-from django.db import models
 
 class CustomUserManager(BaseUserManager):
     """
-    Custom manager for the custom user model.
+    Gestionnaire personnalisé pour le modèle utilisateur.
     """
     def create_user(self, email, password=None, **extra_fields):
         if not email:
@@ -39,12 +29,34 @@ class CustomUser(AbstractUser):
     date_of_birth = models.DateField(null=True, blank=True)
     profile_photo = models.ImageField(upload_to='profile_photos/', null=True, blank=True)
     
-    # Use the custom manager
+    groups = models.ManyToManyField(
+        'auth.Group',
+        related_name='customuser_set',
+        blank=True,
+    )
+    user_permissions = models.ManyToManyField(
+        'auth.Permission',
+        related_name='customuser_set',
+        blank=True,
+    )
+
     objects = CustomUserManager()
 
-    # You can specify a unique field for authentication (e.g., email)
-    # USERNAME_FIELD = 'email'
-    # REQUIRED_FIELDS = ['username']
+    class Meta:
+        permissions = [
+            ("can_view", "Can view objects"),
+            ("can_create", "Can create objects"),
+            ("can_edit", "Can edit objects"),
+            ("can_delete", "Can delete objects"),
+        ]
 
     def __str__(self):
         return self.username
+
+class Book(models.Model):
+    title = models.CharField(max_length=200)
+    author = models.CharField(max_length=100)
+    publication_year = models.IntegerField()
+
+    def __str__(self):
+        return self.title
