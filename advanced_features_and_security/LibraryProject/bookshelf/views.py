@@ -1,7 +1,8 @@
 from django.shortcuts import render
-from django.views.generic import ListView
+from django.views.generic import ListView, CreateView
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from .models import Book
+from django.urls import reverse_lazy
 
 class BookListView(PermissionRequiredMixin, ListView):
     model = Book
@@ -12,3 +13,11 @@ class BookListView(PermissionRequiredMixin, ListView):
 
     def get_queryset(self):
         return Book.objects.all()
+
+class BookCreateView(PermissionRequiredMixin, CreateView):
+    model = Book
+    fields = ['title', 'author', 'publication_year']
+    template_name = 'bookshelf/book_form.html'
+    success_url = reverse_lazy('book_list')
+    permission_required = 'bookshelf.can_create'
+    raise_exception = True

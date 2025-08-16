@@ -78,6 +78,34 @@ TEMPLATES = [
         },
     },
 ]
+# --- Security Settings ---
+# Important: In a production environment, set DEBUG to False.
+# This prevents sensitive project information from being exposed in error pages.
+DEBUG = False
+
+# This header adds additional protection against cross-site scripting (XSS) attacks.
+SECURE_BROWSER_XSS_FILTER = True
+
+# This prevents your site from being loaded in a frame on another site,
+# protecting against clickjacking attacks.
+X_FRAME_OPTIONS = 'DENY'
+
+# This prevents browsers from interpreting files as a different MIME type,
+# which can mitigate a type of XSS attack.
+SECURE_CONTENT_TYPE_NOSNIFF = True
+
+# These settings ensure that the CSRF and session cookies are only sent over a secure HTTPS connection.
+# This protects against man-in-the-middle attacks.
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
+
+# When set to True, Django will set the "secure" attribute on the CSRF cookie,
+# instructing browsers to send the cookie only with an HTTPS request.
+CSRF_COOKIE_SECURE = True
+
+# You should also add a list of trusted hosts in production.
+# Replace 'yourdomain.com' with your actual domain name.
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 
 WSGI_APPLICATION = 'LibraryProject.wsgi.application'
 
