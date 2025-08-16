@@ -3,7 +3,7 @@ from django.views.generic import ListView, CreateView
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from .models import Book
 from django.urls import reverse_lazy
-from .forms import BookForm, ExampleForm
+from .forms import BookForm, ExampleForm  
 
 class BookListView(PermissionRequiredMixin, ListView):
     model = Book
